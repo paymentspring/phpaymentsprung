@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 
 class CustomersController extends Controller
 {
@@ -33,9 +33,7 @@ class CustomersController extends Controller
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
                 'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
-        } catch (clientException $e) {
-            dd($e->getMessage());
-        } catch (requestException $e) {
+        } catch (TransferException $e) {
             dd($e->getMessage());
         }
         // get status and render response
@@ -57,9 +55,7 @@ class CustomersController extends Controller
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/customers/search', [
                 'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
-        } catch (clientException $e) {
-            dd($e->getMessage());
-        } catch (requestException $e) {
+        } catch (TransferException $e) {
             dd($e->getMessage());
         }
         // The json_decode call takes the response and returns an associative array that is used in the search results.
