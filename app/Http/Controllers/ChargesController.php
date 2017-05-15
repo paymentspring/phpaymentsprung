@@ -40,24 +40,15 @@ class ChargesController extends Controller
         // Create and send request
         $client = new Client();
 
-        try
-        {
+        try {
             $response = $client->post('https://api.paymentspring.com/api/v1/charge', [
-                'auth' => [env('PRIVATE_KEY'), ''], 'body' => $parameters]);    
-        }
-        
-        catch (ClientException $e) 
-        {
+                'auth' => [env('PRIVATE_KEY'), ''], 'body' => $parameters]);
+        } catch (ClientException $e) {
+            dd($e->getMessage());
+        } catch (RequestException $e) {
             dd($e->getMessage());
         }
-
-        catch (RequestException $e)
-        {
-            dd($e->getMessage());
-        }
-
         dd($response->getBody());
-
     }
 
     // Generates a token to be used with a card or bank charge
@@ -66,19 +57,12 @@ class ChargesController extends Controller
         //Create and send request
         $client = new Client();
 
-        try
-        {
+        try {
             $response = $client->post('https://api.paymentspring.com/api/v1/tokens', [
                 'auth' => [env('PUBLIC_KEY'), ''], 'body' => $body]);
-        }
-
-        catch (ClientException $e)
-        {
+        } catch (ClientException $e) {
             dd($e->getMessage());
-        }
-
-        catch (RequestException $e)
-        {
+        } catch (RequestException $e) {
             dd($e->getMessage());
         }
         
