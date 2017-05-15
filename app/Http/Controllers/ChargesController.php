@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 
 class ChargesController extends Controller
 {
@@ -25,7 +25,6 @@ class ChargesController extends Controller
             "card_exp_year" => $year,
             "csc" => request('csc'),
         ];
-        $body = json_encode($body);
 
         // Generate token
         $tokenID = $this->tokenize($body);
@@ -35,17 +34,48 @@ class ChargesController extends Controller
             "token" => $tokenID,
             "amount" => $this->toCents(request('amount')),
         ];
-        $parameters = json_encode($parameters);
 
         // Create and send request
         $client = new Client();
 
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/charge', [
-                'auth' => [env('PRIVATE_KEY'), ''], 'body' => $parameters]);
-        } catch (ClientException $e) {
+                'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($parameters)]);
+        } catch (TransferException $e) {
             dd($e->getMessage());
-        } catch (RequestException $e) {
+        }
+        dd($response->getBody()->getContents());
+    }
+
+    // Charges a bank account using a generated token
+    public function chargeBank()
+    {
+        // Create body for tokenization
+        $body = [
+            "token_type" => 'bank_account',
+            "bank_account_number" => request('bank_account_number'),
+            "bank_routing_number" => request('bank_routing_number'),
+            "bank_account_holder_first_name" => request('bank_account_holder_first_name'),
+            "bank_account_holder_last_name" => request('bank_account_holder_last_name'),
+            "bank_account_type" => request('bank_account_type'),
+        ];
+
+        // Generate token
+        $tokenID = $this->tokenize($body);
+
+        // Create body for charge
+        $parameters = [
+            "token" => $tokenID,
+            "amount" => $this->toCents(request('amount')),
+        ];
+
+        // Create and send request
+        $client = new Client();
+
+        try {
+            $response = $client->post('https://api.paymentspring.com/api/v1/charge', [
+                'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($parameters)]);
+        } catch (TransferException $e) {
             dd($e->getMessage());
         }
         dd($response->getBody()->getContents());
@@ -59,10 +89,8 @@ class ChargesController extends Controller
 
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/tokens', [
-                'auth' => [env('PUBLIC_KEY'), ''], 'body' => $body]);
-        } catch (ClientException $e) {
-            dd($e->getMessage());
-        } catch (RequestException $e) {
+                'auth' => [env('PUBLIC_KEY'), ''], 'body' => json_encode($body)]);
+        } catch (TransferException $e) {
             dd($e->getMessage());
         }
         
