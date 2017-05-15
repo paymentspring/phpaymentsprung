@@ -25,14 +25,13 @@ class CustomersController extends Controller
             "first_name" => request('first_name'),
             "last_name" => request('last_name'),
         ];
-        $body = json_encode($body);
 
         // create request
         $client = new Client();
 
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
-                'auth' => [env('PRIVATE_KEY'), ''], 'body' => $body]);
+                'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
         } catch (clientException $e) {
             dd($e->getMessage());
         } catch (requestException $e) {
@@ -50,14 +49,13 @@ class CustomersController extends Controller
         $body = [
             "search_term" => request('search_term'),
         ];
-        $body = json_encode($body);
 
          // create request
         $client = new Client();
 
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/customers/search', [
-                'auth' => [env('PRIVATE_KEY'), ''], 'body' => $body]);
+                'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
         } catch (clientException $e) {
             dd($e->getMessage());
         } catch (requestException $e) {
