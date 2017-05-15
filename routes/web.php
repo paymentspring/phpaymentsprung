@@ -22,3 +22,9 @@ Route::get('/customers/new', function () {
 });
 
 Route::post('/customers', 'CustomersController@create');
+
+Route::get('/charges/card', function () {
+    return view('charges/card');
+});
+
+Route::post('charges/card', 'ChargesController@chargeCard');
