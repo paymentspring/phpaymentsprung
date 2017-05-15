@@ -25,7 +25,6 @@ class ChargesController extends Controller
             "card_exp_year" => $year,
             "csc" => request('csc'),
         ];
-        $body = json_encode($body);
 
         // Generate token
         $tokenID = $this->tokenize($body);
@@ -35,14 +34,13 @@ class ChargesController extends Controller
             "token" => $tokenID,
             "amount" => $this->toCents(request('amount')),
         ];
-        $parameters = json_encode($parameters);
 
         // Create and send request
         $client = new Client();
 
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/charge', [
-                'auth' => [env('PRIVATE_KEY'), ''], 'body' => $parameters]);
+                'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($parameters)]);
         } catch (TransferException $e) {
             dd($e->getMessage());
         }
@@ -61,7 +59,6 @@ class ChargesController extends Controller
             "bank_account_holder_last_name" => request('bank_account_holder_last_name'),
             "bank_account_type" => request('bank_account_type'),
         ];
-        $body = json_encode($body);
 
         // Generate token
         $tokenID = $this->tokenize($body);
@@ -71,14 +68,13 @@ class ChargesController extends Controller
             "token" => $tokenID,
             "amount" => $this->toCents(request('amount')),
         ];
-        $parameters = json_encode($parameters);
 
         // Create and send request
         $client = new Client();
 
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/charge', [
-                'auth' => [env('PRIVATE_KEY'), ''], 'body' => $parameters]);
+                'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($parameters)]);
         } catch (TransferException $e) {
             dd($e->getMessage());
         }
@@ -93,7 +89,7 @@ class ChargesController extends Controller
 
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/tokens', [
-                'auth' => [env('PUBLIC_KEY'), ''], 'body' => $body]);
+                'auth' => [env('PUBLIC_KEY'), ''], 'body' => json_encode($body)]);
         } catch (TransferException $e) {
             dd($e->getMessage());
         }
