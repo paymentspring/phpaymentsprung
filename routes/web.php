@@ -28,3 +28,9 @@ Route::get('/charges/card', function () {
 });
 
 Route::post('charges/card', 'ChargesController@card');
+
+Route::get('charges/bank', function() {
+    return view('charges/bank');
+});
+
+Route::post('charges/bank', 'ChargesController@chargeBank');
