@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class CustomersController extends Controller
 {
@@ -29,19 +30,40 @@ class CustomersController extends Controller
         // create request
         $client = new Client();
 
-        try
-        {
+        try {
             $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
                 'auth' => [env('PRIVATE_KEY'), ''], 'body' => $body]);
+        } catch (clientException $e) {
+            dd($e->getMessage());
+        } catch (requestException $e) {
+            dd($e->getMessage());
         }
-
-        catch (clientException $e)
-        {
-            dd($e->errorMessage());
-        }
-
         // get status and render response
         $status = $response->getStatusCode();
         dd($status);
+    }
+
+    // Takes a search query and returns list of customers
+    public function search()
+    {
+        // define params
+        $body = [
+            "search_term" => request('search_term'),
+        ];
+        $body = json_encode($body);
+
+         // create request
+        $client = new Client();
+
+        try {
+            $response = $client->post('https://api.paymentspring.com/api/v1/customers/search', [
+                'auth' => [env('PRIVATE_KEY'), ''], 'body' => $body]);
+        } catch (clientException $e) {
+            dd($e->getMessage());
+        } catch (requestException $e) {
+            dd($e->getMessage());
+        }
+        $body = json_decode($response->getBody(), true);
+        return view('customers.results', ['body' => $body]);
     }
 }
