@@ -11,7 +11,8 @@ class CustomersController extends Controller
         $client = new Client();
         $response = $client->get('https://api.paymentspring.com/api/v1/customers', [
             'auth' => [env('PRIVATE_KEY'), '']]);
-        return view('customers.index', ['body' => $response->getBody()]);
+        $body = json_decode($response->getBody(), true);
+        return view('customers.index', ['body' => $body]);
     }
 
     // Take form params and send request to PaymentSpring API to create a customer
@@ -27,8 +28,17 @@ class CustomersController extends Controller
 
         // create request
         $client = new Client();
-        $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
-            'auth' => [env('PRIVATE_KEY'), ''], 'body' => $body]);
+
+        try
+        {
+            $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
+                'auth' => [env('PRIVATE_KEY'), ''], 'body' => $body]);
+        }
+
+        catch (clientException $e)
+        {
+            dd($e->errorMessage());
+        }
 
         // get status and render response
         $status = $response->getStatusCode();
