@@ -9,7 +9,7 @@ use GuzzleHttp\Exception\RequestException;
 class ChargesController extends Controller
 {
     // Charges a card using a generated token
-    public function card()
+    public function chargeCard()
     {
         // Split date
         $date = explode('/', request('expiration_date'));
@@ -48,8 +48,7 @@ class ChargesController extends Controller
         } catch (RequestException $e) {
             dd($e->getMessage());
         }
-
-        dd($response->getBody());
+        dd($response->getBody()->getContents());
     }
 
     // Charges a bank account using a generated token
