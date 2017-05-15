@@ -7,5 +7,4 @@
         <a href="{{ url('customers/new') }}" class="btn btn-default">Create a customer</a>
         <a href="{{ url('charges/card') }}" class="btn btn-default">Charge a card</a>
     </div>
-
 @endsection
