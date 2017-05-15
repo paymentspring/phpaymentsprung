@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 
 class ChargesController extends Controller
 {
@@ -43,9 +43,7 @@ class ChargesController extends Controller
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/charge', [
                 'auth' => [env('PRIVATE_KEY'), ''], 'body' => $parameters]);
-        } catch (ClientException $e) {
-            dd($e->getMessage());
-        } catch (RequestException $e) {
+        } catch (TransferException $e) {
             dd($e->getMessage());
         }
         dd($response->getBody()->getContents());
@@ -81,9 +79,7 @@ class ChargesController extends Controller
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/charge', [
                 'auth' => [env('PRIVATE_KEY'), ''], 'body' => $parameters]);
-        } catch (ClientException $e) {
-            dd($e->getMessage());
-        } catch (RequestException $e) {
+        } catch (TransferException $e) {
             dd($e->getMessage());
         }
         dd($response->getBody()->getContents());
@@ -98,9 +94,7 @@ class ChargesController extends Controller
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/tokens', [
                 'auth' => [env('PUBLIC_KEY'), ''], 'body' => $body]);
-        } catch (ClientException $e) {
-            dd($e->getMessage());
-        } catch (RequestException $e) {
+        } catch (TransferException $e) {
             dd($e->getMessage());
         }
         
