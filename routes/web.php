@@ -27,4 +27,4 @@ Route::get('/charges/card', function () {
     return view('charges/card');
 });
 
-Route::post('charges/card', 'ChargesController@card');
+Route::post('charges/card', 'ChargesController@chargeCard');
