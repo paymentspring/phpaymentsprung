@@ -39,3 +39,9 @@ Route::get('charges/bank', function() {
     return view('charges/bank');
 });
 Route::post('charges/bank', 'ChargesController@chargeBank');
+
+Route::get('plans/new', function() {
+    return view('plans/new');
+});
+
+Route::post('plans/new', 'PlansController@new');

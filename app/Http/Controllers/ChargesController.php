@@ -98,11 +98,4 @@ class ChargesController extends Controller
         $json = json_decode($response->getBody(), true);
         return $json['id'];
     }
-
-    // The PaymentSpring API expects an integer representation in cents,
-    // so we call this method before sending any amounts
-    public function toCents($amount)
-    {
-        return bcmul($amount, 100);
-    }
 }
