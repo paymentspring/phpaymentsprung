@@ -45,3 +45,9 @@ Route::get('plans/new', function() {
 });
 
 Route::post('plans/new', 'PlansController@new');
+
+Route::get('subscriptions/new', function() {
+    return view('subscriptions/new');
+});
+
+Route::post('subscriptions/new', 'SubscriptionsController@new');
