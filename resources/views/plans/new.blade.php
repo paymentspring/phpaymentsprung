@@ -2,7 +2,7 @@
 
 @section ('content')
   <h1>Create a plan</h1>
-  <form action="/plans" method="post" class="form-group">
+  <form action="/plans/new" method="post" class="form-group">
     {{ csrf_field() }}
     <select name="frequency" class="form-control">
       <option value="daily">Daily</option>
