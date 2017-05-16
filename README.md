@@ -4,7 +4,7 @@ PHPaymentSprung is a sample app demonstrating PaymentSpring's API interacting wi
 
 ## Getting Started
 
-PHPaymentSprung was created using Laravel 5.4 Running it with older versions may lead to unexpected results! To start, clone this repo wherever you'd like:
+PHPaymentSprung was created using Laravel 5.4. Running it with older versions may lead to unexpected results! To start, clone this repo wherever you'd like:
 
 `git clone https://github.com/paymentspring/phpaymentsprung.git`
 
@@ -33,9 +33,9 @@ Next we'll run a Composer install to make sure all our dependencies are download
 
 Phew! With that configuration out of the way, we can go ahead and run the application. From the root directory of PHPaymentSprung, run `php artisan serve`. If all goes well, you should be able to point your web browser at `localhost:8000` and see the PHPaymentSprung landing page.
 
-## Integrating PaymentSpring Into Your Laravel Sites
+## Integrating PaymentSpring into Your Laravel Sites
 
-We designed PHPaymentSprung as an exampmle of how to integrate the PaymentSpring API into Laravel apps. Most of the functions in PHPaymentSprung have the same, easy-to-implement process. To demonstrate this, we'll run through one of the requests: Creating a Customer.
+We designed PHPaymentSprung as an example of how to integrate the PaymentSpring API into Laravel apps. Most of the functions in PHPaymentSprung have the same, easy-to-implement process. To demonstrate this, we'll run through one of the requests: Creating a Customer.
 
 First, we'll take a look at the CustomersController, which handles requests dealing with Customers. Go ahead and open `app/Http/Controllers/CustomersController.php`. The function we are concerned with in this case is `create`:
 ```PHP
