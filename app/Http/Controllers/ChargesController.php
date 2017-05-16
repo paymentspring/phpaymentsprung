@@ -12,9 +12,13 @@ class ChargesController extends Controller
     public function chargeCard()
     {
         // Split date
-        $date = explode('/', request('expiration_date'));
-        $month = $date[0];
-        $year = $date[1];
+        try {
+            $date = explode('/', request('expiration_date'));   
+            $month = $date[0];
+            $year = $date[1];
+        } catch (ErrorException $e) {
+            dd("Error: Date needs to be valid and in format MM/YYYY");
+        }
 
         // Create body for tokenization
         $body = [
