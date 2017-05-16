@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
+use ErrorException;
 
 class CustomersController extends Controller
 {
@@ -20,11 +21,32 @@ class CustomersController extends Controller
     // Takes form params and sends request to PaymentSpring API to create a customer.
     public function create()
     {
+        // split date
+        try {
+            $date = explode('/', request('card_exp'));   
+            $month = $date[0];
+            $year = $date[1];
+        } catch (ErrorException $e) {
+            dd("Error: Date needs to be valid and in format MM/YYYY");
+        }
+        
+
         // define params
         $body = [
             "company" => request('company'),
             "first_name" => request('first_name'),
             "last_name" => request('last_name'),
+            "address_1" => request('address_1'),
+            "address_2" => request('address_2'),
+            "city" => request('city'),
+            "state" => request('state'),
+            "zip" => request('zip'),
+            "phone" => request('phone'),
+            "fax" => request('fax'),
+            "website" => request('website'),
+            "card_number" => request('card_number'),
+            "card_exp_month" => $month,
+            "card_exp_year" => $year,
         ];
 
         // create request
@@ -37,8 +59,7 @@ class CustomersController extends Controller
             dd($e->getMessage());
         }
         // get status and render response
-        $status = $response->getStatusCode();
-        dd($status);
+        dd($response->getBody()->getContents());
     }
 
     // Takes a search query and returns list of customers.
