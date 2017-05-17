@@ -25,8 +25,8 @@ PUSHER_APP_ID=
 PUSHER_APP_KEY=
 PUSHER_APP_SECRET=
 
-PRIVATE_KEY=12345678 <-- Place your private key here (no quotes)
-PUBLIC_KEY=87654321 <-- Place your public key here (no quotes)
+PAYMENTSPRING_PRIVATE_KEY=12345678 <-- Place your private key here (no quotes)
+PAYMENTSPRING_PUBLIC_KEY=87654321 <-- Place your public key here (no quotes)
 ```
 
 Next we'll run a Composer install to make sure all our dependencies are downloaded. Make sure you're in the root directory of the project and run `composer install`. You'll also want to set your application key to a random string. To do this, run `php artisan key:generate`, which will update the key in your `.env` file. Since we don't have any database interactions to worry about, you shouldn't need to update any other fields in the `.env` file.
@@ -75,7 +75,7 @@ public function create()
 
     try {
         $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
-            'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
+            'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
     } catch (TransferException $e) {
         dd($e->getMessage());
     }
@@ -121,7 +121,7 @@ $client = new Client();
 
 try {
     $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
-        'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
+        'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
 } catch (TransferException $e) {
     dd($e->getMessage());
 }

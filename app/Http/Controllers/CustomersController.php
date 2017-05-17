@@ -11,7 +11,7 @@ class CustomersController extends Controller
     {
         $client = new Client();
         $response = $client->get('https://api.paymentspring.com/api/v1/customers', [
-            'auth' => [env('PRIVATE_KEY'), '']]);
+            'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), '']]);
         // The json_decode call takes the response and returns an associative array that is used in the index view.
         $body = json_decode($response->getBody(), true);
         return view('customers.index', ['body' => $body]);
@@ -32,7 +32,7 @@ class CustomersController extends Controller
 
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
-                'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
+                'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
         } catch (TransferException $e) {
             dd($e->getMessage());
         }
@@ -54,7 +54,7 @@ class CustomersController extends Controller
 
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/customers/search', [
-                'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
+                'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
         } catch (TransferException $e) {
             dd($e->getMessage());
         }
