@@ -4,11 +4,15 @@ PHPaymentSprung is a sample app demonstrating PaymentSpring's API interacting wi
 
 ## Getting Started
 
-PHPaymentSprung was created using Laravel 5.4. Running it with older versions may lead to unexpected results! To start, clone this repo wherever you'd like:
+PHPaymentSprung was created using Laravel 5.4. Running it with older versions may lead to unexpected results! After getting Laravel 5.4 up and running on your machine, clone this repo wherever you'd like:
 
 `git clone https://github.com/paymentspring/phpaymentsprung.git`
 
-Before PHPaymentSprung will run correctly, you'll need to grab your [PaymentSpring API keys](https://manage.paymentspring.com/account), which can be found at the bottom of your account page on PaymentSpring's dashboard. If you don't have a PaymentSpring account yet, [what are you waiting for](https://paymentspring.com/signup/)? It's free!
+Before PHPaymentSprung will run correctly, you'll need to grab your [PaymentSpring API keys](https://manage.paymentspring.com/account), which can be found at the bottom of your account page on PaymentSpring's dashboard:
+
+![PaymentSpring Account Settings Screenshot](/public/API_KEY.png?raw=true "PaymentSpring Account Settings Screenshot")
+
+If you don't have a PaymentSpring account yet, [what are you waiting for](https://paymentspring.com/signup/)? It's free!
 
 **Note: you may need to regenerate your keys, as your private API key is only shown upon generation for security purposes.**
 
