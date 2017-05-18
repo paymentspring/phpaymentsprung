@@ -22,7 +22,7 @@ class SubscriptionsController extends Controller
         
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/plans/'.request('id').'//subscription/'.request('customer_id'), [
-                'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
+                'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
         } catch (TransferException $e) {
             dd($e->getMessage());
         }
