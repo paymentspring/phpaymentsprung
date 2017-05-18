@@ -8,9 +8,11 @@ PHPaymentSprung was created using Laravel 5.4. Running it with older versions ma
 
 `git clone https://github.com/paymentspring/phpaymentsprung.git`
 
-Before PHPaymentSprung will run correctly, you'll need to grab your [PaymentSpring API keys](https://manage.paymentspring.com/account), which can be found at the bottom of your account page on PaymentSpring's dashboard:
+Before PHPaymentSprung will run correctly, you'll need to grab your [PaymentSpring API keys](https://manage.paymentspring.com/account). Your unique private and public key are used to validate API requests, so we'll need to set these if we want our requests to work. The keys can be found at the bottom of your account page on PaymentSpring's dashboard:
 
-![PaymentSpring Account Settings Screenshot](/public/API_KEY.png?raw=true "PaymentSpring Account Settings Screenshot")
+![PaymentSpring Account Tab Screenshot](/public/ACCOUNT.png?raw-true "PaymentSpring API Key Screenshot")
+
+![PaymentSpring API Key Screenshot](/public/API_KEY.png?raw=true "PaymentSpring API Key Screenshot")
 
 If you don't have a PaymentSpring account yet, [what are you waiting for](https://paymentspring.com/signup/)? It's free!
 
