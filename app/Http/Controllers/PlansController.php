@@ -23,7 +23,7 @@ class PlansController extends Controller
         
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/plans', [
-                'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
+                'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
         } catch (TransferException $e) {
             dd($e->getMessage());
         }

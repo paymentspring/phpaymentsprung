@@ -45,7 +45,7 @@ class ChargesController extends Controller
 
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/charge', [
-                'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($parameters)]);
+                'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($parameters)]);
         } catch (TransferException $e) {
             dd($e->getMessage());
         }
@@ -79,7 +79,7 @@ class ChargesController extends Controller
 
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/charge', [
-                'auth' => [env('PRIVATE_KEY'), ''], 'body' => json_encode($parameters)]);
+                'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($parameters)]);
         } catch (TransferException $e) {
             dd($e->getMessage());
         }
@@ -94,7 +94,7 @@ class ChargesController extends Controller
 
         try {
             $response = $client->post('https://api.paymentspring.com/api/v1/tokens', [
-                'auth' => [env('PUBLIC_KEY'), ''], 'body' => json_encode($body)]);
+                'auth' => [env('PAYMENTSPRING_PUBLIC_KEY'), ''], 'body' => json_encode($body)]);
         } catch (TransferException $e) {
             dd($e->getMessage());
         }
