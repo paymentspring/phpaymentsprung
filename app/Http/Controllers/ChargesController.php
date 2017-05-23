@@ -12,32 +12,10 @@ class ChargesController extends Controller
     // Charges a card using a generated token
     public function chargeCard()
     {
-        // Split date
-        try {
-            $date = explode('/', request('expiration_date'));   
-            $month = $date[0];
-            $year = $date[1];
-        } catch (ErrorException $e) {
-            dd("Error: Date needs to be valid and in format MM/YYYY");
-        }
-
-        // Create body for tokenization
-        $body = [
-            "token_type" => 'credit_card',
-            "card_owner_name" => request('card_owner_name'),
-            "card_number" => request('card_number'),
-            "card_exp_month" => $month,
-            "card_exp_year" => $year,
-            "csc" => request('csc'),
-        ];
-
-        // Generate token
-        $tokenID = $this->tokenize($body);
-
         // Create body for charge
         $parameters = [
-            "token" => $tokenID,
-            "amount" => $this->toCents(request('amount')),
+            "token" => $_POST['params']['token']['id'],
+            "amount" => $this->toCents($_POST['params']['amount']),
         ];
 
         // Create and send request
@@ -49,7 +27,7 @@ class ChargesController extends Controller
         } catch (TransferException $e) {
             dd($e->getMessage());
         }
-        dd($response->getBody()->getContents());
+        return $response->getBody()->getContents();
     }
 
     // Charges a bank account using a generated token
