@@ -5,6 +5,7 @@ $(document).ready(function() {
     // Grab the CSRF token
     var _token = $('input[name="_token"]').val();
 
+    // Set amount and transaction token
     var params = {
       amount: $( '#amount' ).val(),
       token: response
