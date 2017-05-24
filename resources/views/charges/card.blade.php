@@ -4,6 +4,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://paymentspring.com/js/paymentspring.js"></script>
 <script type="text/javascript" src="{{ asset('js/charge.js') }}"></script>
+<script>
+  var paymentspring_public_key = '{{ env('PAYMENTSPRING_PUBLIC_KEY') }}';
+</script>
 @endsection
 
 @section ('content')

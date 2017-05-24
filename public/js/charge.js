@@ -16,10 +16,11 @@ $(document).ready(function() {
       data: { _token: _token, params: params},
       type: 'POST',
       success: function(data) {
-        $( '#response' ).append('Success!');
+        var dataJSON = JSON.parse(data);
+        $( '#response' ).append('Success! Transaction status: ' + dataJSON.status);
       },
       error: function(data) {
-        $ ( '#response' ).append('Error! ' + params['token']['errors'][0]['code'] + ' ' + params['token']['errors'][0]['message']);
+        $ ( '#response' ).append('Error! ' + data.responseJSON.code + ' ' + data.responseJSON.message);
       }
     });
   }
@@ -33,7 +34,7 @@ $(document).ready(function() {
     $( '#response' ).empty();
 
     // Grab data from form
-    var public_key = 'test_98c218fbbcc231cb863d76983582f3cbc456c325d2687aa30e2006cf3a';
+    var public_key = paymentspring_public_key;
     var card_holder = $( '#card_holder' ).val();
     var card_number = $( '#card_number' ).val();
     var csc = $( '#csc' ).val();
