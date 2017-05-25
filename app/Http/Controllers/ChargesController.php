@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
+use Response;
 use ErrorException;
 
 class ChargesController extends Controller
@@ -12,32 +13,14 @@ class ChargesController extends Controller
     // Charges a card using a generated token
     public function chargeCard()
     {
-        // Split date
-        try {
-            $date = explode('/', request('expiration_date'));   
-            $month = $date[0];
-            $year = $date[1];
-        } catch (ErrorException $e) {
-            dd("Error: Date needs to be valid and in format MM/YYYY");
+        // If the token was not created successfully, we grab the response here and send it back to the view
+        if (array_key_exists('errors', $_POST['params']['token'])) {
+            return Response::json(['code' => $_POST['params']['token']['errors'][0]['code'], 'message' => $_POST['params']['token']['errors'][0]['message']], 500);
         }
-
-        // Create body for tokenization
-        $body = [
-            "token_type" => 'credit_card',
-            "card_owner_name" => request('card_owner_name'),
-            "card_number" => request('card_number'),
-            "card_exp_month" => $month,
-            "card_exp_year" => $year,
-            "csc" => request('csc'),
-        ];
-
-        // Generate token
-        $tokenID = $this->tokenize($body);
-
         // Create body for charge
         $parameters = [
-            "token" => $tokenID,
-            "amount" => $this->toCents(request('amount')),
+            "token" => $_POST['params']['token']['id'],
+            "amount" => $this->toCents($_POST['params']['amount']),
         ];
 
         // Create and send request
@@ -47,9 +30,10 @@ class ChargesController extends Controller
             $response = $client->post('https://api.paymentspring.com/api/v1/charge', [
                 'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($parameters)]);
         } catch (TransferException $e) {
-            dd($e->getMessage());
+            // If guzzle has a problem posting the charge, we grab the error message and display it to the user
+            return Response::json(['code' => '', 'message' => $e->getMessage()], 500);
         }
-        dd($response->getBody()->getContents());
+        return $response->getBody()->getContents();
     }
 
     // Charges a bank account using a generated token

@@ -7,6 +7,7 @@
   <title>PhPaymentSprung</title>
   <link rel="stylesheet" href="{{ URL::asset('css/custom.css') }}">
   <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
+  @yield('scripts')
 </head>
 <body>
   <div class="container"> 
