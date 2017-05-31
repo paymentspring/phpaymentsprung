@@ -11,8 +11,13 @@ class CustomersController extends Controller
     public function index()
     {
         $client = new Client();
-        $response = $client->get('https://api.paymentspring.com/api/v1/customers', [
-            'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), '']]);
+        try {
+            $response = $client->get('https://api.paymentspring.com/api/v1/customers', [
+                'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), '']]);
+        } catch(TransferException $e) {
+            dd($e->getMessage());
+        }
+
         // The json_decode call takes the response and returns an associative array that is used in the index view.
         $body = json_decode($response->getBody(), true);
         return view('customers.index', ['body' => $body]);
