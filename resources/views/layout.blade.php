@@ -13,5 +13,6 @@
   <div class="container"> 
     @yield('content')
   </div>
+  <h4 align="center">Made with the <a href="https://paymentspring.com/developers/" target="_blank">PaymentSpring API</a></h4>
 </body>
 </html>
