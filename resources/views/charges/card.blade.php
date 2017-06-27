@@ -3,7 +3,7 @@
 @section ('scripts')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="{{ asset('js/paymentspringTokenizer.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/chargeCard.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/charge.js') }}"></script>
 <script>
   var paymentspring_public_key = '{{ env('PAYMENTSPRING_PUBLIC_KEY') }}';
 </script>
@@ -11,7 +11,7 @@
 
 @section ('content')
   <h1>Charge a card</h1>
-  <form id="card_form" class="form-group">
+  <form id="chargeForm" class="form-group">
     {{ csrf_field() }}
     <input type="text" id="card_holder" placeholder="Card Owner Name" class="form-control">
     <input type="text" id="card_number" placeholder="Card Number" class="form-control">

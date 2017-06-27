@@ -25,7 +25,7 @@ $(document).ready(function() {
     });
   }
 
-  $( '#payment_form' ).submit(function(event)
+  $( '#chargeForm' ).submit(function(event)
   {
     // Form submit events don't play nice with jsonp callbacks, so we prevent default behavior
     event.preventDefault();
