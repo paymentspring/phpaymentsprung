@@ -19,6 +19,7 @@
     <input type="text" id="exp_month" placeholder="MM" class="form-control">
     <input type="text" id="exp_year" placeholder="YYYY" class="form-control">
     <input type="text" id="amount" placeholder="00.00" class="form-control">
+    <input id="token_type" type="hidden" name"token_type" value="credit_card">
     <input type="submit" value="submit" class="btn btn-default">
   </form>
   <div id="response"></div>

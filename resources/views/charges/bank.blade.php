@@ -24,6 +24,7 @@
       <option value="savings">Savings</option>
     </select>
     <input id="amount" type="text" name="amount" placeholder="00.00" class="form-control">
+    <input id="token_type" type="hidden" name"token_type" value="bank_account">
     <input type="submit" value="submit" class="btn btn-default">
   </form>
   <div id="response"></div>

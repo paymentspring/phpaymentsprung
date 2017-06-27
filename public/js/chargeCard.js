@@ -25,7 +25,7 @@ $(document).ready(function() {
     });
   }
 
-  $( '#card_form' ).submit(function(event)
+  $( '#payment_form' ).submit(function(event)
   {
     // Form submit events don't play nice with jsonp callbacks, so we prevent default behavior
     event.preventDefault();
@@ -35,12 +35,18 @@ $(document).ready(function() {
 
     // Grab data from form
     var publicKey = paymentspring_public_key;
-    var cardInfo = {
+    var paymentInfo = {
       "card_owner_name": $( '#card_holder' ).val(),
       "card_number": $( '#card_number' ).val(),
       "csc": $( '#csc' ).val(),
       "card_exp_month": $( '#exp_month' ).val(),
       "card_exp_year": $( '#exp_year' ).val(),
+      "bank_account_holder_first_name": $( '#bank_account_holder_first_name' ).val(),
+      "bank_account_holder_last_name": $( '#bank_account_holder_last_name' ).val(),
+      "bank_account_number": $( '#bank_account_number' ).val(),
+      "bank_routing_number": $( '#bank_routing_number' ).val(),
+      "bank_account_type": $( '#bank_account_type' ).val(),
+      "token_type": $('#token_type').val()
     };
 
     // Generate token

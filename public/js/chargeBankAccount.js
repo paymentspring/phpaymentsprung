@@ -41,7 +41,7 @@ $(document).ready(function() {
       "bank_account_number": $( '#bank_account_number' ).val(),
       "bank_routing_number": $( '#bank_routing_number' ).val(),
       "bank_account_type": $( '#bank_account_type' ).val(),
-      "token_type": "bank_account"
+      "token_type": $('#token_type').val()
     };
 
     console.log(bankInfo);
