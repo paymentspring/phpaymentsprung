@@ -29,16 +29,17 @@ Route::get('customers/search', function() {
 
 Route::post('customers/search', 'CustomersController@search');
 
+// View forms for charges
 Route::get('/charges/card', function () {
     return view('charges/card');
 });
 
-Route::post('charges/card', 'ChargesController@chargeCard');
-
 Route::get('charges/bank', function() {
     return view('charges/bank');
 });
-Route::post('charges/bank', 'ChargesController@chargeBank');
+
+//Post a new charge
+Route::post('charges/new', 'ChargesController@newCharge');
 
 Route::get('plans/new', function() {
     return view('plans/new');
