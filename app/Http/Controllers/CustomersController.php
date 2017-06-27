@@ -1,91 +1,77 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
+use Response;
 use ErrorException;
 
 class CustomersController extends Controller
 {
-    public function index()
-    {
-        $client = new Client();
-        try {
-            $response = $client->get('https://api.paymentspring.com/api/v1/customers', [
-                'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), '']]);
-        } catch(TransferException $e) {
-            dd($e->getMessage());
-        }
-
-        // The json_decode call takes the response and returns an associative array that is used in the index view.
-        $body = json_decode($response->getBody(), true);
-        return view('customers.index', ['body' => $body]);
+  public function index()
+  {
+    $client = new Client();
+    try {
+      $response = $client->get('https://api.paymentspring.com/api/v1/customers', [
+        'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), '']]);
+    } catch(TransferException $e) {
+      dd($e->getMessage());
     }
 
-    // Takes form params and sends request to PaymentSpring API to create a customer.
-    public function create()
-    {
-        // split date
-        try {
-            $date = explode('/', request('card_exp'));   
-            $month = $date[0];
-            $year = $date[1];
-        } catch (ErrorException $e) {
-            dd("Error: Date needs to be valid and in format MM/YYYY");
-        }
-        
+    // The json_decode call takes the response and returns an associative array that is used in the index view.
+    $body = json_decode($response->getBody(), true);
+    return view('customers.index', ['body' => $body]);
+  }
 
-        // define params
-        $body = [
-            "company" => request('company'),
-            "first_name" => request('first_name'),
-            "last_name" => request('last_name'),
-            "address_1" => request('address_1'),
-            "address_2" => request('address_2'),
-            "city" => request('city'),
-            "state" => request('state'),
-            "zip" => request('zip'),
-            "phone" => request('phone'),
-            "fax" => request('fax'),
-            "website" => request('website'),
-            "card_number" => request('card_number'),
-            "card_exp_month" => $month,
-            "card_exp_year" => $year,
-        ];
-
-        // create request
-        $client = new Client();
-
-        try {
-            $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
-                'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
-        } catch (TransferException $e) {
-            dd($e->getMessage());
-        }
-        // get status and render response
-        dd($response->getBody()->getContents());
+  // Takes form params and sends request to PaymentSpring API to create a customer.
+  public function create() {
+    // If the token was not created successfully, we grab the response here and send it back to the view
+    if (array_key_exists('errors', $_POST['params']['token'])) {
+      return Response::json(['code' => $_POST['params']['token']['errors'][0]['code'],
+        'message' => $_POST['params']['token']['errors'][0]['message']], 500);
     }
+    // define params
+    $body = [
+      "token" => $_POST['params']['token']['id']
+    ];
 
-    // Takes a search query and returns list of customers.
-    public function search()
-    {
-        // define params
-        $body = [
-            "search_term" => request('search_term'),
-        ];
+    // create request
+    $client = new Client();
 
-         // create request
-        $client = new Client();
-
-        try {
-            $response = $client->post('https://api.paymentspring.com/api/v1/customers/search', [
-                'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
-        } catch (TransferException $e) {
-            dd($e->getMessage());
-        }
-        // The json_decode call takes the response and returns an associative array that is used in the search results.
-        $body = json_decode($response->getBody(), true);
-        return view('customers.results', ['body' => $body]);
+    try {
+      $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
+        'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''],
+        'json' => $body]);
+    } catch (TransferException $e) {
+      return Response::json(['code' => '', 'message' => $e->getMessage()], 400);
     }
+    // get status and render response
+    // TODO: For whatever reason, we get back content in application/html
+    //  instead of application/json, and I'm not sure how to coerce it correctly.
+    dd(json_decode($response->getBody()->getContents(), true));
+  }
+
+  // Takes a search query and returns list of customers.
+  public function search()
+  {
+    // define params
+    $body = [
+      "search_term" => request('search_term'),
+    ];
+
+    // create request
+    $client = new Client();
+
+    try {
+      $response = $client->post('https://api.paymentspring.com/api/v1/customers/search', [
+        'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
+    } catch (TransferException $e) {
+      dd($e->getMessage());
+    }
+    // The json_decode call takes the response and returns an associative array that is used in the search results.
+    $body = json_decode($response->getBody(), true);
+    return view('customers.results', ['body' => $body]);
+  }
 }

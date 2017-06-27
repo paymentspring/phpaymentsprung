@@ -39,7 +39,7 @@ Route::get('charges/bank', function() {
 });
 
 //Post a new charge
-Route::post('charges/new', 'ChargesController@newCharge');
+Route::post('charges/', 'ChargesController@newCharge');
 
 Route::get('plans/new', function() {
     return view('plans/new');
