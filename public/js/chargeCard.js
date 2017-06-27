@@ -12,7 +12,7 @@ $(document).ready(function() {
     };
 
     $.ajax({
-      url: '/charges/card',
+      url: '/charges/new',
       data: { _token: _token, params: params},
       type: 'POST',
       success: function(data) {
@@ -34,14 +34,16 @@ $(document).ready(function() {
     $( '#response' ).empty();
 
     // Grab data from form
-    var public_key = paymentspring_public_key;
-    var card_holder = $( '#card_holder' ).val();
-    var card_number = $( '#card_number' ).val();
-    var csc = $( '#csc' ).val();
-    var exp_month = $( '#exp_month' ).val();
-    var exp_year = $( '#exp_year' ).val();
+    var publicKey = paymentspring_public_key;
+    var cardInfo = {
+      "card_owner_name": $( '#card_holder' ).val(),
+      "card_number": $( '#card_number' ).val(),
+      "csc": $( '#csc' ).val(),
+      "card_exp_month": $( '#exp_month' ).val(),
+      "card_exp_year": $( '#exp_year' ).val(),
+    };
 
     // Generate token
-    paymentspring.generateToken(public_key, card_number, csc, card_holder, exp_month, exp_year, callback);
+    paymentspring.generateToken(publicKey, cardInfo, callback);
   });
 });

@@ -38,19 +38,19 @@ modification you should need to make is to insert your API keys at the bottom of
 the file:
 
 ```
-MAIL_DRIVER=smtp
-MAIL_HOST=smtp.mailtrap.io
-MAIL_PORT=2525
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_ENCRYPTION=null
+  MAIL_DRIVER=smtp
+  MAIL_HOST=smtp.mailtrap.io
+  MAIL_PORT=2525
+  MAIL_USERNAME=null
+  MAIL_PASSWORD=null
+  MAIL_ENCRYPTION=null
 
-PUSHER_APP_ID=
-PUSHER_APP_KEY=
-PUSHER_APP_SECRET=
+  PUSHER_APP_ID=
+  PUSHER_APP_KEY=
+  PUSHER_APP_SECRET=
 
-PAYMENTSPRING_PRIVATE_KEY=12345678 <-- Place your private key here (no quotes)
-PAYMENTSPRING_PUBLIC_KEY=87654321 <-- Place your public key here (no quotes)
+  PAYMENTSPRING_PRIVATE_KEY=12345678 <-- Place your private key here (no quotes)
+  PAYMENTSPRING_PUBLIC_KEY=87654321 <-- Place your public key here (no quotes)
 ```
 
 Next we'll run a Composer install to make sure all our dependencies are
@@ -112,15 +112,15 @@ card](https://github.com/paymentspring/phpaymentsprung/blob/master/resources/vie
 includes the relevant Javascript, which is a combination of these two files:
 
 ```php
-<script type="text/javascript" src="https://paymentspring.com/js/paymentspring.js"></script>
-<script type="text/javascript" src="{{ asset('js/charge.js') }}"></script>
+  <script type="text/javascript" src="{{ assets('paymentspringTokenizer.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/charge.js') }}"></script>
 ```
 
 The [`paymentspring.js` file](https://paymentspring.com/js/paymentspring.js) handles a lot of our tokenization for us, which we
 use specifically in this line of code:
 
 ```javascript
-paymentspring.generateToken(public_key, card_number, csc, card_holder, exp_month, exp_year, callback);
+  paymentspring.generateToken(public_key, cardInfo, callback);
 ```
 
 If you'd rather write your own JS tokenizer, the easiest way by far is to hit
@@ -147,60 +147,60 @@ dealing with Customers. Go ahead and open
 with in this case is `create`:
 
 ```PHP
-// Takes form params and sends request to PaymentSpring API to create a customer.
-public function create()
-{
-    // split date
-    try {
-        $date = explode('/', request('card_exp'));
-        $month = $date[0];
-        $year = $date[1];
-    } catch (ErrorException $e) {
-        dd("Error: Date needs to be valid and in format MM/YYYY");
-    }
+  // Takes form params and sends request to PaymentSpring API to create a customer.
+  public function create()
+  {
+      // split date
+      try {
+          $date = explode('/', request('card_exp'));
+          $month = $date[0];
+          $year = $date[1];
+      } catch (ErrorException $e) {
+          dd("Error: Date needs to be valid and in format MM/YYYY");
+      }
 
-    // define params
-    $body = [
-        "company" => request('company'),
-        "first_name" => request('first_name'),
-        "last_name" => request('last_name'),
-        "address_1" => request('address_1'),
-        "address_2" => request('address_2'),
-        "city" => request('city'),
-        "state" => request('state'),
-        "zip" => request('zip'),
-        "phone" => request('phone'),
-        "fax" => request('fax'),
-        "website" => request('website'),
-        "card_number" => request('card_number'),
-        "card_exp_month" => $month,
-        "card_exp_year" => $year,
-    ];
+      // define params
+      $body = [
+          "company" => request('company'),
+          "first_name" => request('first_name'),
+          "last_name" => request('last_name'),
+          "address_1" => request('address_1'),
+          "address_2" => request('address_2'),
+          "city" => request('city'),
+          "state" => request('state'),
+          "zip" => request('zip'),
+          "phone" => request('phone'),
+          "fax" => request('fax'),
+          "website" => request('website'),
+          "card_number" => request('card_number'),
+          "card_exp_month" => $month,
+          "card_exp_year" => $year,
+      ];
 
-    // create request
-    $client = new Client();
+      // create request
+      $client = new Client();
 
-    try {
-        $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
-            'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
-    } catch (TransferException $e) {
-        dd($e->getMessage());
-    }
-    // get status and render response
-    dd($response->getBody()->getContents());
-}
+      try {
+          $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
+              'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
+      } catch (TransferException $e) {
+          dd($e->getMessage());
+      }
+      // get status and render response
+      dd($response->getBody()->getContents());
+  }
 ```
 Let's break down this method into smaller pieces. First, we split the date parameter:
 
 ```PHP
-// split date
-try {
-    $date = explode('/', request('card_exp'));
-    $month = $date[0];
-    $year = $date[1];
-} catch (ErrorException $e) {
-    dd("Error: Date needs to be valid and in format MM/YYYY");
-}
+  // split date
+  try {
+      $date = explode('/', request('card_exp'));
+      $month = $date[0];
+      $year = $date[1];
+  } catch (ErrorException $e) {
+      dd("Error: Date needs to be valid and in format MM/YYYY");
+  }
 ```
 
 It's important to know that all the parameters here are being gathered from the
@@ -211,26 +211,25 @@ two separate input fields in the form, but this felt like a good demonstration
 of some behind-the-scenes logic possible with Laravel. Moving on, we define our
 parameters:
 
- ```PHP
-// define params
-$body = [
-    "company" => request('company'),
-    "first_name" => request('first_name'),
-    "last_name" => request('last_name'),
-    "address_1" => request('address_1'),
-    "address_2" => request('address_2'),
-    "city" => request('city'),
-    "state" => request('state'),
-    "zip" => request('zip'),
-    "phone" => request('phone'),
-    "fax" => request('fax'),
-    "website" => request('website'),
-    "card_number" => request('card_number'),
-    "card_exp_month" => $month,
-    "card_exp_year" => $year,
-];
-
- ```
+```PHP
+  // define params
+  $body = [
+      "company" => request('company'),
+      "first_name" => request('first_name'),
+      "last_name" => request('last_name'),
+      "address_1" => request('address_1'),
+      "address_2" => request('address_2'),
+      "city" => request('city'),
+      "state" => request('state'),
+      "zip" => request('zip'),
+      "phone" => request('phone'),
+      "fax" => request('fax'),
+      "website" => request('website'),
+      "card_number" => request('card_number'),
+      "card_exp_month" => $month,
+      "card_exp_year" => $year,
+  ];
+```
 
 This sets up an associative array with the [keys that the PaymentSpring API
 expects](https://paymentspring.com/developers/#create-a-customer) being paired
@@ -240,17 +239,17 @@ the notable exception of the date that we split earlier. Finally, we send the
 request:
 
 ```PHP
-// create request
-$client = new Client();
+  // create request
+  $client = new Client();
 
-try {
-    $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
-        'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
-} catch (TransferException $e) {
-    dd($e->getMessage());
-}
-// get status and render response
-dd($response->getBody()->getContents());
+  try {
+      $response = $client->post('https://api.paymentspring.com/api/v1/customers', [
+          'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($body)]);
+  } catch (TransferException $e) {
+      dd($e->getMessage());
+  }
+  // get status and render response
+  dd($response->getBody()->getContents());
 ```
 
 There's quite a bit going on here! Let's look at each piece.
