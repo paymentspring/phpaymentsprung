@@ -1,32 +1,28 @@
 $(document).ready(function() {
 
-  function callback(response)
-  {
+  function callback(response) {
     // Grab the CSRF token
     var _token = $('input[name="_token"]').val();
 
-    // Set amount and transaction token
+    // set customer creation token
     var params = {
-      amount: $( '#amount' ).val(),
       token: response
     };
 
     $.ajax({
-      url: '/charges/',
+      url: '/customers',
       data: { _token: _token, params: params},
       type: 'POST',
       success: function(data) {
-        var dataJSON = JSON.parse(data);
-        $( '#response' ).append('Success! Transaction status: ' + dataJSON.status);
+        $( '#response' ).append('Success! Customer Created!');
       },
       error: function(data) {
-        $ ( '#response' ).append('Error! ' + data.responseJSON.code + ' ' + data.responseJSON.message);
+        $ ( '#response' ).append('Error! ' + data.responseJSON.message );
       }
     });
   }
 
-  $( '#chargeForm' ).submit(function(event)
-  {
+  $( '#customerForm' ).submit(function(event) {
     // Form submit events don't play nice with jsonp callbacks, so we prevent default behavior
     event.preventDefault();
 
@@ -36,12 +32,12 @@ $(document).ready(function() {
     // Grab data from form
     var publicKey = paymentspring_public_key;
     tokenParams = $(".token-param");
-    var paymentInfo = {}
+    var customerInfo = {}
     for(var i = 0; i < tokenParams.length; i++) {
-      paymentInfo[tokenParams[i].id] = tokenParams[i].value;
+      customerInfo[tokenParams[i].id] = tokenParams[i].value;
     }
 
     // Generate token
-    paymentspring.generateToken(publicKey, paymentInfo, callback);
+    paymentspring.generateToken(publicKey, customerInfo, callback);
   });
 });

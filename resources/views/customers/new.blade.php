@@ -1,25 +1,37 @@
 @extends ('layout')
 
+@section ('scripts')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{ asset('js/paymentspringTokenizer.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/customerCreate.js') }}"></script>
+<script>
+  var paymentspring_public_key = '{{ env('PAYMENTSPRING_PUBLIC_KEY') }}';
+</script>
+@endsection
+
 @section ('content')
 
   <h1>Create a customer</h1>
 
-  <form action="/customers" method="post" class="form-group">
+  <form id="customerForm" action="/customers" method="post" class="form-group">
     {{ csrf_field() }}
-    <input type="text" name="company" placeholder="Company Name" class="form-control">
-    <input type="text" name="first_name" placeholder="First Name" class="form-control">
-    <input type="text" name="last_name" placeholder="Last Name" class="form-control">
-    <input type="text" name="address_1" placeholder="Address 1" class="form-control">
-    <input type="text" name="address_2" placeholder="Address 2" class="form-control">
-    <input type="text" name="city" placeholder="City" class="form-control">
-    <input type="text" name=state placeholder="State" class="form-control">
-    <input type="text" name=zip placeholder="Zip" class="form-control">
-    <input type="text" name=phone placeholder="Phone Number" class="form-control">
-    <input type="text" name=fax placeholder="Fax Number" class="form-control">
-    <input type="text" name=website placeholder="Website" class="form-control">
-    <input type="text" name=card_number placeholder="Card Number" class="form-control">
-    <input type="text" name=card_exp placeholder="MM/YY" class="form-control">
+    <input type="text" id="company" placeholder="Company Name" class="form-control token-param">
+    <input type="text" id="card_owner_name" placeholder="Card Owner Name" class="form-control token-param">
+    <input type="text" id="address_1" placeholder="Address 1" class="form-control token-param">
+    <input type="text" id="address_2" placeholder="Address 2" class="form-control token-param">
+    <input type="text" id="city" placeholder="City" class="form-control token-param">
+    <input type="text" id="state" placeholder="State" class="form-control token-param">
+    <input type="text" id="zip" placeholder="Zip" class="form-control token-param">
+    <input type="text" id="phone" placeholder="Phone Number" class="form-control token-param">
+    <input type="text" id="fax" placeholder="Fax Number" class="form-control token-param">
+    <input type="text" id="website" placeholder="Website" class="form-control token-param">
+    <input type="text" id="card_number" placeholder="Card Number" class="form-control token-param">
+    <input type="text" id="card_exp_month" placeholder="MM" class="form-control token-param">
+    <input type="text" id="card_exp_year" placeholder="YYYY" class="form-control token-param">
+    <input type="text" id="csc" placeholder="CSC/CVV" class="form-control token-param">
+    <input id="token_type" type="hidden" class="token-param" name"token_type" value="credit_card">
     <input type="submit" value="submit" class="btn btn-default">
   </form>
+  <div id="response"></div>
 
 @endsection

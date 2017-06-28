@@ -31,7 +31,7 @@ class ChargesController extends Controller
         'auth' => [env('PAYMENTSPRING_PRIVATE_KEY'), ''], 'body' => json_encode($parameters)]);
     } catch (TransferException $e) {
       // If guzzle has a problem posting the charge, we grab the error message and display it to the user
-      return Response::json(['code' => '', 'message' => $e->getMessage()], 500);
+      return Response::json(['code' => '', 'message' => $e->getMessage()], 400);
     }
     return $response->getBody()->getContents();
   }
