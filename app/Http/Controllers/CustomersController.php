@@ -30,7 +30,7 @@ class CustomersController extends Controller
     // If the token was not created successfully, we grab the response here and send it back to the view
     if (array_key_exists('errors', $_POST['params']['token'])) {
       return Response::json(['code' => $_POST['params']['token']['errors'][0]['code'],
-        'message' => $_POST['params']['token']['errors'][0]['message']], 500);
+        'message' => $_POST['params']['token']['errors'][0]['message']], 400);
     }
     // define params
     $body = [
